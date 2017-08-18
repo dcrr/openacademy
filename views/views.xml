@@ -82,9 +82,6 @@
       <form string="Session Form">
         <sheet>
           <group>
-            <field name="name"/>
-          </group>
-          <group>
             <group string="General">
               <field name="course_id"/>
               <field name="name"/>
