@@ -16,6 +16,22 @@ class Course(models.Model):
                         ('name_unique', 'UNIQUE(name)', "The course title must be unique"),
                         ]
 
+    @api.multi
+    def copy(self, default=None):
+        """ Re-implement your own "copy" method which allows to duplicate the Course object,
+            changing the original name into "Copy of [original name]"."""
+        default = dict(default or {})
+
+        copied_count = self.search_count(
+            [('name', '=like', u"Copy of {}%".format(self.name))])
+        if not copied_count:
+            new_name = u"Copy of {}".format(self.name)
+        else:
+            new_name = u"Copy of {} ({})".format(self.name, copied_count)
+
+        default['name'] = new_name
+        return super(Course, self).copy(default)
+
 
 class Session(models.Model):
     _name = 'openacademy.session'
