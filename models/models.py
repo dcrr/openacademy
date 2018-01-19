@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 class Course(models.Model):
     _name = 'openacademy.course'
@@ -29,6 +29,8 @@ class Session(models.Model):
     # specifies the fields on which the taken_seats fields depends to be calculated
     @api.depends('seats', 'attendee_ids')
     def _taken_seats(self):
+        """Calculate the value of the taken_seats field
+           Returns the value of taken_seats field"""
         # the object self is a recordset, that is, an ordered collection of records
         for r in self:
             if not r.seats:
@@ -36,8 +38,11 @@ class Session(models.Model):
             else:
                 r.taken_seats = 100.0*len(r.attendee_ids)/r.seats
 
+    # specifies the fields, which when changed, triggers the event _verify_valid_seats
     @api.onchange('seats', 'attendee_ids')
     def _verify_valid_seats(self):
+        """Checks if the seats numbers is negative or less than the numbers of attendees
+           and generates an warn"""
         if self.seats < 0:
             return {
                 'warning': {
@@ -52,3 +57,11 @@ class Session(models.Model):
                     'message': "Increase seats or remove excess attendees",
                 },
             }
+
+    # specifies which fields are involved in the constraint
+    @api.constrains('instructor_id', 'attendee_ids')
+    def _check_instructor_not_in_attendees(self):
+        """Checks that the instructor is not present in the attendees"""
+        for r in self:
+            if r.instructor_id and r.instructor_id in r.attendee_ids:
+                raise exceptions.ValidationError("A session's instructor can't be an attendee")
