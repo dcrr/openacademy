@@ -105,9 +105,15 @@
       <field name="name">session.tree</field>
       <field name="model">openacademy.session</field>
       <field name="arch" type="xml">
-        <tree string="Session Tree">
+		  	<!-- decoration-{$name} allow changing the style of a row's text based on the corresponding record's attributes.
+    		{$name} can be bf (font-weight: bold), it (font-style: italic), or any bootstrap contextual color
+    		(danger, info, muted, primary, success or warning).-->
+				<!-- sessions lasting less than 5 days are colored blue,
+				and the ones lasting more than 15 days are colored red.-->
+        <tree string="Session Tree" decoration-info="duration&lt;5" decoration-danger="duration&gt;15">
           <field name="name"/>
           <field name="course_id"/>
+          <field name="duration" invisible="1"/>
           <field name="taken_seats" widget="progressbar"/>
         </tree>
       </field>
