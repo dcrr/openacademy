@@ -54,6 +54,7 @@ class Session(models.Model):
     end_date = fields.Date(string="End Date", store=True, compute='_get_end_date', inverse='_set_end_date')
     hours = fields.Float(string="Duration in hours", compute='_get_hours', inverse='_set_hours')
     attendees_count = fields.Integer(string="Attendees count", compute='_get_attendees_count', store=True)
+    color = fields.Integer()
 
     # specifies the fields on which the taken_seats fields depends to be calculated
     @api.depends('seats', 'attendee_ids')
