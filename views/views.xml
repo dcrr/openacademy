@@ -136,11 +136,37 @@
       </field>
     </record>
 
+    <!-- The gantt view requires the web_gantt module
+    which is present in the enterprise edition version.
+    <record model="ir.ui.view" id="session_gantt_view">
+      <field name="name">session.gantt</field>
+      <field name="model">openacademy.session</field>
+      <field name="arch" type="xml">
+        <gantt string="Session Gantt" color="course_id" date_start="start_date" date_delay="hours"
+               default_group_by='instructor_id'>
+          <field name="name"/>
+        </gantt>
+      </field>
+    </record> -->
+
+		<!-- Graph views perform aggregations on database values, they
+		do not work with non-stored computed fields -->
+    <record model="ir.ui.view" id="openacademy_session_graph_view">
+      <field name="name">openacademy.session.graph</field>
+      <field name="model">openacademy.session</field>
+      <field name="arch" type="xml">
+        <graph string="Participations by Courses">
+          <field name="course_id"/>
+          <field name="attendees_count" type="measure"/>
+        </graph>
+      </field>
+    </record>
+
     <record model="ir.actions.act_window" id="session_list_action">
       <field name="name">Sessions</field>
       <field name="res_model">openacademy.session</field>
       <field name="view_type">form</field>
-      <field name="view_mode">tree,form,calendar</field>
+      <field name="view_mode">tree,form,calendar,graph</field>
     </record>
 
     <menuitem id="session_menu" name="Sessions" parent="openacademy_menu" action="session_list_action"/>
