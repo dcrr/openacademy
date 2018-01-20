@@ -29,6 +29,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/partner_view.xml',
+        'views/session_workflow.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
