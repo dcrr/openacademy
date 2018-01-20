@@ -31,6 +31,13 @@
 			<field name="act_to" ref="confirmed"/>
 			<field name="signal">confirm</field>
 		</record>
+		<!-- Automatically transition sessions from Draft to Confirmed when more than
+		half the session's seats are reserved.-->
+		<record model="workflow.transition" id="session_auto_confirm_half_filled">
+			<field name="act_from" ref="draft"/>
+			<field name="act_to" ref="confirmed"/>
+			<field name="condition">taken_seats &gt; 50</field>
+		</record>
 		<record model="workflow.transition" id="session_confirmed_to_draft">
 			<field name="act_from" ref="confirmed"/>
 			<field name="act_to" ref="draft"/>
