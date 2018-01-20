@@ -38,6 +38,12 @@
         <search>
           <field name="name"/>
           <field name="description"/>
+          <!-- button to filter the courses for which the current user is the responsible in the course search view.-->
+          <filter name="my_courses" string="My Courses" domain="[('responsible_id', '=', uid)]"/>
+          <!--button to group courses by responsible user-->
+          <group string="Group By">
+            <filter name="by_responsible" string="Responsible" context="{'group_by': 'responsible_id'}"/>
+          </group>
         </search>
       </field>
     </record>
@@ -53,12 +59,13 @@
       </field>
     </record>
 
-
     <record model="ir.actions.act_window" id="course_list_action">
       <field name="name">Courses</field>
       <field name="res_model">openacademy.course</field>
       <field name="view_type">form</field>
       <field name="view_mode">tree,form</field>
+      <!--Make the filter my_courses selected by default-->
+      <field name="context" eval="{'search_default_my_courses': 1}"/>
       <field name="help" type="html">
         <p class="oe_view_nocontent_create">Create the first course</p>
       </field>
