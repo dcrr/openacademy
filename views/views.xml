@@ -228,5 +228,31 @@
     </record>
 
     <menuitem id="contact_cat_menu" name="Contact Tags" parent="configuration_menu" action="contact_cat_list_action"/>
+
+		<record model="ir.ui.view" id="wizard_form_view">
+			<field name="name">wizard.form</field>
+			<field name="model">openacademy.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Add Attendees">
+					<group>
+						<field name="session_id"/>
+						<field name="attendee_ids"/>
+					</group>
+					<footer>
+						<button name="subscribe" type="object" string="Subscribe" class="oe_highlight"/>
+						or
+						<button special="cancel" string="Cancel"/>
+					</footer>
+
+				</form>
+			</field>
+		</record>
+
+		<!-- Wizards are launched by ir.actions.act_window records, with the field target set to the value new,
+		 or using an ir.actions.act_window record like above, but with an extra field src_model that specifies
+		 in the context of which model the action is available-->
+		<act_window id="launch_session_wizard" name="Add Attendees" src_model="openacademy.session"
+								res_model="openacademy.wizard" view_mode="form" target="new" key2="client_action_multi"/>
+
   </data>
 </odoo>
